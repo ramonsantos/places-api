@@ -5,7 +5,7 @@ require_relative 'boot'
 require 'rails'
 # Pick the frameworks you want:
 require 'active_model/railtie'
-require 'active_job/railtie'
+# require 'active_job/railtie'
 require 'active_record/railtie'
 # require "active_storage/engine"
 require 'action_controller/railtie'
@@ -35,5 +35,16 @@ module PlacesApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Test files generator
+    config.generators do |generator|
+      generator.test_framework(
+        :rspec,
+        fixtures: false,
+        request_specs: true,
+        controller_specs: true,
+        routing_specs: true
+      )
+    end
   end
 end
