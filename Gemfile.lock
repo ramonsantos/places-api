@@ -75,6 +75,10 @@ GEM
       factory_bot (~> 5.2.0)
       railties (>= 4.2.0)
     ffi (1.13.1)
+    geokit (1.13.1)
+    geokit-rails (2.3.1)
+      geokit (~> 1.5)
+      rails (>= 3.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.8.5)
@@ -222,6 +226,7 @@ DEPENDENCIES
   brakeman
   database_cleaner
   factory_bot_rails (~> 5.2)
+  geokit-rails
   listen (~> 3.2)
   pg (>= 0.18, < 2.0)
   pry-byebug
