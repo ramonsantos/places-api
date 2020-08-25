@@ -41,7 +41,6 @@ module PlacesApi
       generator.test_framework(
         :rspec,
         fixtures: false,
-        request_specs: true,
         controller_specs: true,
         routing_specs: true
       )

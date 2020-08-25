@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :place do
     name { 'Recife' }
-    latitude { -8.050000 }
+    latitude { -8.050004 }
     longitude { -34.900002 }
   end
 end

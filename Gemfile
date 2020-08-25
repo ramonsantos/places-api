@@ -12,13 +12,14 @@ gem 'puma', '~> 4.1'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.2'
 
 group :development, :test do
+  gem 'amazing_print', '~> 1.2'
+  gem 'factory_bot_rails', '~> 5.2'
   gem 'pry-byebug'
   gem 'pry-rails'
 end
 
 group :development do
   gem 'brakeman'
-  gem 'factory_bot_rails', '~> 5.2'
   gem 'listen', '~> 3.2'
   gem 'rubocop'
   gem 'rubocop-performance'
