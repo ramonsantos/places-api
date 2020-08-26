@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PlacesController < ApplicationController
+  before_action :authenticate_user!
+
   # GET /places
   def index
     @places = Place.all
@@ -10,7 +12,7 @@ class PlacesController < ApplicationController
 
   # POST /places
   def create
-    @place = Place.new(place_params)
+    @place = Place.new(place_params.merge!(user: current_user))
 
     if @place.save
       render json: @place, status: :created

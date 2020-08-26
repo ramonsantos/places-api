@@ -2,6 +2,8 @@
 
 FactoryBot.define do
   factory :place do
+    user { User.first || create(:user) }
+
     name { 'Recife' }
     latitude { -8.050004 }
     longitude { -34.900002 }

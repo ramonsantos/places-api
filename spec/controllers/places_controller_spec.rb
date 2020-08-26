@@ -1,18 +1,25 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'devise/jwt/test_helpers'
 
-RSpec.describe PlacesController, type: :controller do
+describe PlacesController, type: :controller do
   let(:valid_attributes) { attributes_for(:place) }
   let(:invalid_attributes) { attributes_for(:place, latitude: nil) }
   let(:parsed_response_body) { JSON.parse(response.body) }
+  let!(:user) { create(:user) }
+
+  before do
+    headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
+    request.headers.merge!(Devise::JWT::TestHelpers.auth_headers(headers, user))
+  end
 
   describe 'GET #index' do
     context "when there aren't places" do
       it 'returns a success response' do
         get(:index)
 
-        expect(response).to be_successful
+         expect(response).to be_successful
         expect(parsed_response_body).to eq({ 'places' => [] })
       end
     end
