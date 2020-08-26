@@ -8,6 +8,7 @@ ruby '2.7.1'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise', '~> 4.7', '>= 4.7.2'
 gem 'devise-jwt', '~> 0.8.0'
+gem 'foreman'
 gem 'geokit-rails'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
