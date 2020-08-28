@@ -30,7 +30,7 @@ describe PlacesController, type: :controller do
       let(:expected_response) do
         {
           'places' => [
-            { 'id' => recife.id, 'latitude' => '-8.050004', 'longitude' => '-34.900002', 'name' => 'Recife' }
+            { 'id' => recife.id, 'latitude' => '-8.0500043', 'longitude' => '-34.9000023', 'name' => 'Recife' }
           ]
         }
       end
@@ -53,8 +53,8 @@ describe PlacesController, type: :controller do
 
         expect(response).to have_http_status(:created)
         expect(parsed_response_body['name']).to eq('Recife')
-        expect(parsed_response_body['latitude']).to eq('-8.050004')
-        expect(parsed_response_body['longitude']).to eq('-34.900002')
+        expect(parsed_response_body['latitude']).to eq('-8.0500043')
+        expect(parsed_response_body['longitude']).to eq('-34.9000023')
       end
     end
 
@@ -62,10 +62,27 @@ describe PlacesController, type: :controller do
       let(:expected_error) { { 'errors' => { 'latitude' => ["can't be blank"] } } }
 
       it 'renders a JSON response with errors for the new place' do
-        post(:create, params: { place: invalid_attributes })
+        expect do
+          post(:create, params: { place: invalid_attributes })
 
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(parsed_response_body).to eq(expected_error)
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(parsed_response_body).to eq(expected_error)
+        end.not_to change(Place, :count)
+      end
+    end
+
+    context 'when place already exists' do
+      let(:expected_error) { { 'errors' => { 'latitude' => ['has already been taken'] } } }
+
+      before { create(:place) }
+
+      it 'renders a JSON response with errors for the new place' do
+        expect do
+          post(:create, params: { place: valid_attributes })
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(parsed_response_body).to eq(expected_error)
+        end.not_to change(Place, :count)
       end
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_26_213703) do
+ActiveRecord::Schema.define(version: 2020_08_28_233435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,12 +23,12 @@ ActiveRecord::Schema.define(version: 2020_08_26_213703) do
 
   create_table "places", force: :cascade do |t|
     t.string "name", null: false
-    t.decimal "latitude", precision: 10, scale: 6, null: false
-    t.decimal "longitude", precision: 10, scale: 6, null: false
+    t.decimal "latitude", precision: 10, scale: 7, null: false
+    t.decimal "longitude", precision: 10, scale: 7, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id"
-    t.index ["latitude", "longitude"], name: "index_places_on_latitude_and_longitude"
+    t.bigint "user_id", null: false
+    t.index ["latitude", "longitude"], name: "index_places_on_latitude_and_longitude", unique: true
     t.index ["user_id"], name: "index_places_on_user_id"
   end
 

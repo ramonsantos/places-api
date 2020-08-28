@@ -5,7 +5,7 @@ FactoryBot.define do
     user { User.first || create(:user) }
 
     name { 'Recife' }
-    latitude { -8.050004 }
-    longitude { -34.900002 }
+    latitude { -8.0500043 }
+    longitude { -34.9000023 }
   end
 end
