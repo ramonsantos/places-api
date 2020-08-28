@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Place, type: :model do
+describe Place, type: :model do
   context 'associations' do
     it { is_expected.to belong_to(:user) }
   end

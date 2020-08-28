@@ -274,6 +274,9 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
   # ==> Warden configuration
+  config.warden do |manager|
+    manager.failure_app = AuthenticationFailureResponder
+  end
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
   #
@@ -316,6 +319,6 @@ Devise.setup do |config|
 
     jwt.dispatch_requests = [['POST', %r{^/sign_in$}]]
     jwt.revocation_requests = [['DELETE', %r{^/sign_out$}]]
-    jwt.expiration_time = 5.minutes.to_i
+    jwt.expiration_time = 8.hours.to_i
   end
 end

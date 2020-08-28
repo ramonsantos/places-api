@@ -19,7 +19,7 @@ describe PlacesController, type: :controller do
       it 'returns a success response' do
         get(:index)
 
-         expect(response).to be_successful
+        expect(response).to be_successful
         expect(parsed_response_body).to eq({ 'places' => [] })
       end
     end

@@ -8,4 +8,10 @@ class User < ApplicationRecord
          jwt_revocation_strategy: JwtDenylist
 
   has_many :places, dependent: :delete_all
+
+  def serializable_hash(options = {})
+    options[:except] = [:id, :created_at, :encrypted_password, :updated_at]
+
+    super(options)
+  end
 end

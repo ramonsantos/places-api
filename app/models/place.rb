@@ -11,4 +11,10 @@ class Place < ApplicationRecord
   validates :name,      presence: true
   validates :latitude,  presence: true
   validates :longitude, presence: true
+
+  def serializable_hash(options = {})
+    options[:except] = [:created_at, :updated_at, :user_id]
+
+    super(options)
+  end
 end

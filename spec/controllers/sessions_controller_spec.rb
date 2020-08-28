@@ -28,7 +28,7 @@ describe SessionsController, type: :controller do
 
         expect(subject.current_user).to be_blank
         expect(response).to have_http_status(:unauthorized)
-        expect(response.body).to eq('{"error":"Invalid Email or password."}')
+        expect(response.body).to eq('{"error":"Invalid email or password."}')
       end
     end
   end
