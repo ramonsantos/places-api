@@ -4,5 +4,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'sessions', registrations: 'registrations' }
   get '/users', to: 'users#show'
 
-  resources :places, only: [:create, :index]
+  resources :places, only: [:create, :index] do
+    resources :reviews, only: [:create, :index]
+  end
 end

@@ -8,8 +8,8 @@ class Place < ApplicationRecord
   )
 
   belongs_to :user
+  has_many :reviews, dependent: :delete_all
 
-  validates :user,      presence: true
   validates :name,      presence: true
   validates :latitude,  presence: true, uniqueness: { scope: :longitude }
   validates :longitude, presence: true

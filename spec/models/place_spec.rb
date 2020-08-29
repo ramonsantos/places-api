@@ -7,10 +7,10 @@ describe Place, type: :model do
 
   context 'associations' do
     it { is_expected.to belong_to(:user) }
+    it { is_expected.to have_many(:reviews).dependent(:delete_all) }
   end
 
   context 'validations' do
-    it { is_expected.to validate_presence_of(:user) }
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:latitude) }
     it { is_expected.to validate_presence_of(:longitude) }

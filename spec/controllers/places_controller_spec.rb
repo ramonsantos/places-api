@@ -4,10 +4,8 @@ require 'rails_helper'
 require 'devise/jwt/test_helpers'
 
 describe PlacesController, type: :controller do
-  let(:valid_attributes) { attributes_for(:place) }
-  let(:invalid_attributes) { attributes_for(:place, latitude: nil) }
   let(:parsed_response_body) { JSON.parse(response.body) }
-  let!(:user) { create(:user) }
+  let(:user) { create(:user) }
 
   before do
     headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
@@ -167,6 +165,8 @@ describe PlacesController, type: :controller do
   end
 
   describe 'POST #create' do
+    let(:valid_attributes) { attributes_for(:place) }
+
     context 'with valid params' do
       it 'creates a new Place' do
         expect do
@@ -181,6 +181,8 @@ describe PlacesController, type: :controller do
     end
 
     context 'with invalid params' do
+      let(:invalid_attributes) { attributes_for(:place, latitude: nil) }
+
       let(:expected_error) { { 'errors' => { 'latitude' => ["can't be blank"] } } }
 
       it 'renders a JSON response with errors for the new place' do
