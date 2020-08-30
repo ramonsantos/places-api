@@ -3,14 +3,16 @@
 require 'rails_helper'
 
 describe RegistrationsController, type: :controller do
+  let!(:user) { create(:user, email: 'veronica.ferreira@gmail.com') }
+
   before do
     request.env['devise.mapping'] = Devise.mappings[:user]
     request.env['HTTP_ACCEPT'] = 'application/json'
   end
 
-  let(:valid_attributes) { { user: attributes_for(:user) } }
-
   describe '#create' do
+    let(:valid_attributes) { { user: attributes_for(:user) } }
+
     context 'when success' do
       it 'creates user' do
         expect do
@@ -89,6 +91,69 @@ describe RegistrationsController, type: :controller do
             expect(response).to have_http_status(:unprocessable_entity)
             expect(response.body).to eq('{"errors":{"email":["has already been taken"]}}')
           end.not_to change(User, :count)
+        end
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:new_email) { 'veronica.silva@gmail.com' }
+
+    before { subject.sign_in(user) }
+
+    context 'when success' do
+      context 'when update user email' do
+        it 'updates user' do
+          expect do
+            patch(:update, params: { user: { email: new_email, current_password: user.password } })
+
+            expect(response).to have_http_status(:no_content)
+            expect(response.body).to be_blank
+            user.reload
+          end.to change(user, :email)
+        end
+      end
+
+      context 'when update user password' do
+        it 'updates user' do
+          expect do
+            patch(:update, params: { user: { current_password: user.password, password: 'abc123' } })
+
+            expect(response).to have_http_status(:no_content)
+            expect(response.body).to be_blank
+            user.reload
+          end.to change(user, :encrypted_password)
+        end
+      end
+
+      context 'when update email and password' do
+        let(:params) do
+          { user: { current_password: user.password, password: 'abc123', email: new_email } }
+        end
+
+        it 'updates user' do
+          expect do
+            put(:update, params: params)
+
+            expect(response).to have_http_status(:no_content)
+            expect(response.body).to be_blank
+            user.reload
+            expect(user.email).to eq(new_email)
+          end.to change(user, :encrypted_password)
+        end
+      end
+    end
+
+    context 'when error' do
+      context 'when tries to update without "current_password"' do
+        let(:params) { { user: { password: 'abc123', email: new_email } } }
+        let(:expected_error) { '{"errors":{"current_password":["can\'t be blank"]}}' }
+
+        it 'return error' do
+          put(:update, params: params)
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response.body).to eq(expected_error)
         end
       end
     end

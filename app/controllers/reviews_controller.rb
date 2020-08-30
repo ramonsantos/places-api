@@ -8,9 +8,7 @@ class ReviewsController < ApplicationController
     if place.blank?
       render json: { error: 'Place not found' }, status: :not_found
     else
-      @reviews = Review.where(place: place).page(page)
-
-      render json: { reviews: @reviews, place: serialized_place, total: Review.where(place: place).count, next_page: @reviews.next_page }
+      render json: serialized_reviews
     end
   end
 
@@ -35,6 +33,10 @@ class ReviewsController < ApplicationController
     params[:page] || 1
   end
 
+  def reviews
+    @reviews ||= Review.where(place: place).page(page)
+  end
+
   def place
     @place ||= fetch_place
   end
@@ -51,6 +53,15 @@ class ReviewsController < ApplicationController
       latitude: place.latitude,
       longitude: place.longitude,
       average_rating: Review.where(place: place).average(:rating).try(:round, 1)
+    }
+  end
+
+  def serialized_reviews
+    {
+      reviews: reviews,
+      place: serialized_place,
+      total: Review.where(place: place).count,
+      next_page: reviews.next_page
     }
   end
 end
