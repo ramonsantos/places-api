@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'devise/jwt/test_helpers'
 
 describe V1::PlacesController, type: :controller do
   let(:parsed_response_body) { JSON.parse(response.body) }
   let(:user) { create(:user) }
 
-  before do
-    headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
-    request.headers.merge!(Devise::JWT::TestHelpers.auth_headers(headers, user))
-  end
+  before { headers_authorization(user) }
 
   describe 'GET #index' do
     context 'when success' do

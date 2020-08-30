@@ -40,4 +40,5 @@ RSpec.configure do |config|
 
   # Devise
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include HeadersAuthorization,            type: :controller
 end

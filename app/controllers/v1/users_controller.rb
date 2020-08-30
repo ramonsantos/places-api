@@ -4,6 +4,7 @@ module V1
   class UsersController < ApplicationController
     before_action :authenticate_user!
 
+    # GET /users
     def show
       render json: { user: current_user }, status: :ok
     end

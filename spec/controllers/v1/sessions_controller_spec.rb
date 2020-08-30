@@ -6,10 +6,7 @@ describe V1::SessionsController, type: :controller do
   let!(:user) { create(:user) }
   let(:parsed_response_body) { JSON.parse(response.body) }
 
-  before do
-    request.env['devise.mapping'] = Devise.mappings[:user]
-    request.env['HTTP_ACCEPT'] = 'application/json'
-  end
+  before { request.env['devise.mapping'] = Devise.mappings[:user] }
 
   describe '#create' do
     context 'when correct credentials' do

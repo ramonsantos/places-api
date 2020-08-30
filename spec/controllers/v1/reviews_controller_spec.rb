@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'devise/jwt/test_helpers'
 
 describe V1::ReviewsController, type: :controller do
   let(:invalid_attributes) { attributes_for(:review, rating: nil) }
@@ -10,10 +9,7 @@ describe V1::ReviewsController, type: :controller do
   let(:user2) { create(:user, email: 'veronica.silva@gmail.com') }
   let(:place) { create(:place_camaragibe, user: user2) }
 
-  before do
-    headers = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
-    request.headers.merge!(Devise::JWT::TestHelpers.auth_headers(headers, user1))
-  end
+  before { headers_authorization(user1) }
 
   describe 'GET #index' do
     before { create(:review, place_id: create(:place_joana_bezerra, user: user1).id) }
@@ -141,7 +137,7 @@ describe V1::ReviewsController, type: :controller do
       context 'when the user tries create review without rating' do
         let(:invalid_params) { { review: { comment: '' }, place_id: place.id } }
 
-        let(:expected_error) { '{"rating":["can\'t be blank","is not included between 1 and 5"]}' }
+        let(:expected_error) { '{"errors":{"rating":["can\'t be blank","is not included between 1 and 5"]}}' }
 
         it 'renders a JSON response with errors for the new Review' do
           expect do
@@ -161,7 +157,7 @@ describe V1::ReviewsController, type: :controller do
             post(:create, params: invalid_params)
 
             expect(response).to have_http_status(:unprocessable_entity)
-            expect(response.body).to eq('{"rating":["is not included between 1 and 5"]}')
+            expect(response.body).to eq('{"errors":{"rating":["is not included between 1 and 5"]}}')
           end.not_to change(Review, :count)
         end
       end
@@ -174,7 +170,7 @@ describe V1::ReviewsController, type: :controller do
             post(:create, params: invalid_params)
 
             expect(response).to have_http_status(:unprocessable_entity)
-            expect(response.body).to eq('{"place":["must exist"]}')
+            expect(response.body).to eq('{"errors":{"place":["must exist"]}}')
           end.not_to change(Review, :count)
         end
       end

@@ -5,10 +5,7 @@ require 'rails_helper'
 describe V1::RegistrationsController, type: :controller do
   let!(:user) { create(:user, email: 'veronica.ferreira@gmail.com') }
 
-  before do
-    request.env['devise.mapping'] = Devise.mappings[:user]
-    request.env['HTTP_ACCEPT'] = 'application/json'
-  end
+  before { request.env['devise.mapping'] = Devise.mappings[:user] }
 
   describe '#create' do
     let(:valid_attributes) { { user: attributes_for(:user) } }
@@ -99,7 +96,7 @@ describe V1::RegistrationsController, type: :controller do
   describe '#update' do
     let(:new_email) { 'veronica.silva@gmail.com' }
 
-    before { subject.sign_in(user) }
+    before { headers_authorization(user) }
 
     context 'when success' do
       context 'when update user email' do

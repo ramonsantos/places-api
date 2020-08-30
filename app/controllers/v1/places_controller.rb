@@ -2,6 +2,9 @@
 
 module V1
   class PlacesController < ApplicationController
+    include ActionCreate
+    include Pagination
+
     before_action :authenticate_user!
 
     rescue_from StandardError, with: :render_error
@@ -15,13 +18,7 @@ module V1
 
     # POST /places
     def create
-      @place = Place.new(place_params.merge!(user: current_user))
-
-      if @place.save
-        render json: @place, status: :created
-      else
-        render json: { errors: @place.errors.to_hash }, status: :unprocessable_entity
-      end
+      create_resource(build_new_place)
     end
 
     private
@@ -34,8 +31,8 @@ module V1
       params.require(:place).permit(:name, :latitude, :longitude)
     end
 
-    def page
-      params[:page] || 1
+    def build_new_place
+      Place.new(place_params.merge!(user: current_user))
     end
 
     def listing_mode
@@ -49,19 +46,17 @@ module V1
     def places
       return Place.all.order(:name).page(page) if listing_mode == :list
 
-      Place.closest(origin: [latitude, longitude]).page(page)
+      Place.closest(origin: origin_coordinates).page(page)
     end
 
-    def latitude
-      raise(StandardError, "Latitude can't be blank") if params[:latitude].blank?
-
-      params[:latitude]
+    def origin_coordinates
+      [present_parameter(:latitude), present_parameter(:longitude)]
     end
 
-    def longitude
-      raise(StandardError, "Longitude can't be blank") if params[:longitude].blank?
+    def present_parameter(parameter)
+      return params[parameter] if params[parameter].present?
 
-      params[:longitude]
+      raise(StandardError, "#{parameter.capitalize} can't be blank")
     end
   end
 end
