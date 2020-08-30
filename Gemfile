@@ -15,6 +15,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 gem 'rack-cors'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.2'
+gem 'versionist'
 
 group :development, :test do
   gem 'amazing_print', '~> 1.2'

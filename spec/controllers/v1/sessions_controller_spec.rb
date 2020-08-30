@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SessionsController, type: :controller do
+describe V1::SessionsController, type: :controller do
   let!(:user) { create(:user) }
   let(:parsed_response_body) { JSON.parse(response.body) }
 

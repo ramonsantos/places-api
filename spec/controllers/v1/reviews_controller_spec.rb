@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'devise/jwt/test_helpers'
 
-describe ReviewsController, type: :controller do
+describe V1::ReviewsController, type: :controller do
   let(:invalid_attributes) { attributes_for(:review, rating: nil) }
   let(:parsed_response_body) { JSON.parse(response.body) }
   let(:user1) { create(:user) }

@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'devise/jwt/test_helpers'
 
-describe UsersController, type: :controller do
+describe V1::UsersController, type: :controller do
   let!(:user) { create(:user) }
 
   describe 'GET #show' do

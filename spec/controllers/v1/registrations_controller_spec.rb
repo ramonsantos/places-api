@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe RegistrationsController, type: :controller do
+describe V1::RegistrationsController, type: :controller do
   let!(:user) { create(:user, email: 'veronica.ferreira@gmail.com') }
 
   before do

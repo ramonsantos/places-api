@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'devise/jwt/test_helpers'
 
-describe PlacesController, type: :controller do
+describe V1::PlacesController, type: :controller do
   let(:parsed_response_body) { JSON.parse(response.body) }
   let(:user) { create(:user) }
 
